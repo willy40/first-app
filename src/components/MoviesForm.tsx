@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import moviesActions from '../stores/actions/movieActions'
 
 interface IMoviesFormProps { 
-    add: any,
-    reset: any
+    add: (movie: string) => {},
+    reset: () => {}
 }
 
 interface IMoviesFormState {
