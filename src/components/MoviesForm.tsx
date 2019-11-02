@@ -1,21 +1,30 @@
-import React, {PureComponent} from 'react'
+import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import moviesActions from '../stores/actions/movieActions'
 
-class MoviesForm extends PureComponent{
-    constructor(props){
-        super(props);
-    
+interface IMoviesFormProps { 
+    add: any,
+    reset: any
+}
+
+interface IMoviesFormState {
+    value: string
+}
+
+class MoviesForm extends Component<IMoviesFormProps, IMoviesFormState>{
+    constructor(props: IMoviesFormProps){
+        super(props)
+
         this.state = {
-            value:''
+            value: ''
         }
     }
 
-    changeValue = (e) => {
+    changeValue = (e: any) => {
         this.setState({value: e.target.value});
     }
 
-    handleAdd = (e) => {
+    handleAdd = (e: any) => {
         e.preventDefault();
         if(this.state.value.length <= 0){
             return;
@@ -25,7 +34,7 @@ class MoviesForm extends PureComponent{
         this.setState({value:''})
     }
 
-    handleEnter = (e) => {
+    handleEnter = (e: any) => {
         if(e.key === 'Enter'){
             this.handleAdd(e)
         }
@@ -55,7 +64,7 @@ class MoviesForm extends PureComponent{
 }
 
 const mapDispatchToProps = () =>({
-    add: (movie) => moviesActions.add(movie),
+    add: (movie: string) => moviesActions.add(movie),
     reset: () => moviesActions.reset()
 })
 
