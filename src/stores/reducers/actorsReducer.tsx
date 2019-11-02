@@ -1,8 +1,10 @@
-const initialActors = {
+import { IActors, IAction } from './types'
+
+const initialActors : IActors = {
   list: [ 'Julia Roberts', 'Tom Hanks']
 }
 
-function actorsReducer(state = initialActors, action){
+function actorsReducer(state = initialActors, action : IAction){
     switch(action.type){
       case 'ADD_ACTOR':
       return {
@@ -18,4 +20,4 @@ function actorsReducer(state = initialActors, action){
     }
   }
   
-   export default actorsReducer; 
+   export default actorsReducer;

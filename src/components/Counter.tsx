@@ -1,7 +1,11 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 
-class Counter extends Component{
+interface ICounterProps{
+    count: number
+}
+
+class Counter extends Component<ICounterProps>{
     render(){
         return(
             <span>Count: {this.props.count}</span>
@@ -9,7 +13,7 @@ class Counter extends Component{
     }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state:any) => ({
     count: state.movies.list.length
 })
 

@@ -1,8 +1,10 @@
-const initialMovies = {
-  list: []
+import { IMovies, IAction } from './types'
+
+const initialMovies : IMovies = {
+  list: ['Martix', 'Rambo']
 }
 
-function moviesReducer(state = initialMovies, action){
+function moviesReducer(state = initialMovies, action: IAction){
     switch(action.type){
       case 'ADD_MOVIE':
       return {
@@ -18,4 +20,4 @@ function moviesReducer(state = initialMovies, action){
     }
   }
   
-  export default moviesReducer; 
+  export default moviesReducer;
