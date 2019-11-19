@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import moviesActions from '../stores/actions/movieActions'
+import { IMovie } from '../stores/reducers/types'
 
 interface IMoviesFormProps { 
-    add: (movie: string) => {},
+    add: (movie: IMovie) => {},
     reset: () => {}
 }
 
@@ -30,7 +31,12 @@ class MoviesForm extends Component<IMoviesFormProps, IMoviesFormState>{
             return;
         }
 
-        this.props.add(this.state.value);
+        this.props.add(
+            {
+                id: 100,
+                name: this.state.value
+            });
+
         this.setState({value:''})
     }
 
@@ -47,7 +53,7 @@ class MoviesForm extends Component<IMoviesFormProps, IMoviesFormState>{
     render(){
         return (
             <form onSubmit={this.handleAdd}>
-                <input type="Text" 
+                Enter Movie name: <input type="Text" 
                     value={this.state.value}
                     onChange={this.changeValue}
                     onKeyPress={this.handleEnter}/>
@@ -64,7 +70,7 @@ class MoviesForm extends Component<IMoviesFormProps, IMoviesFormState>{
 }
 
 const mapDispatchToProps = () =>({
-    add: (movie: string) => moviesActions.add(movie),
+    add: (movie: IMovie) => moviesActions.add(movie),
     reset: () => moviesActions.reset()
 })
 
