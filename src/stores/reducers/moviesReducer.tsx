@@ -1,6 +1,13 @@
-import { IMovies, IAction } from './types'
-import { ADD_MOVIE, RESET_MOVIES, FETCH_MOVIES, FETCH_MOVIES_COMPLET, FETCH_MOVIES_ERROR } from '../actions/actions'
-import { addMovie } from '../../apis/movieApi'
+  import { IMovies, IAction } from './types'
+import {
+   ADD_MOVIE,
+   RESET_MOVIES,
+   FETCH_MOVIES_PENDING,
+   FETCH_MOVIES_COMPLET,
+   FETCH_MOVIES_ERROR,
+   ADD_MOVIE_ERROR,
+   ADD_MOVIE_PENDING,
+   RESET_ERROR_STATE } from '../actions/actions'
 
 const initialMovies : IMovies = {
   list: [],
@@ -9,22 +16,20 @@ const initialMovies : IMovies = {
 }
 
 function moviesReducer(state = initialMovies, action: IAction){
+    console.log(action.type);
+
     switch(action.type){
       case ADD_MOVIE:
-      
-      addMovie(action.item.name);
+        return {...state.list};
 
-      // return {
-      //   ...state,
-      // };
-      
       case RESET_MOVIES: 
       return {
         ...state, 
         list: []
       };
 
-      case FETCH_MOVIES:
+      case ADD_MOVIE_PENDING:
+      case FETCH_MOVIES_PENDING:
         return {
           ...state,
           pending: true,
@@ -32,7 +37,7 @@ function moviesReducer(state = initialMovies, action: IAction){
         }
 
         case FETCH_MOVIES_COMPLET:
-          return{
+          return {
             ...state,
             pending: false,
             error: false,            
@@ -45,7 +50,19 @@ function moviesReducer(state = initialMovies, action: IAction){
               error: true,
               pending: false
             }
-      
+
+          case ADD_MOVIE_ERROR:
+            return {
+              ...state,
+              error: true
+            }
+          case RESET_ERROR_STATE:
+            return {
+              ...state,
+              error: false,
+              pending: false
+            }
+
       default: return state;
     }
   }

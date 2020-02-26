@@ -1,4 +1,5 @@
-import React, {Component} from 'react';
+import {Component} from 'react';
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -10,14 +11,15 @@ import './App.css';
 import Movies from './Movies'
 import MoviesForm from './MoviesForm'
 import Counter from './Counter';
+import React from 'react';
 
 class App extends Component {
   render() {
     return (
       <Router>
-      <div>
-        <ul>
-          <li>
+      <div className="col-md-6 col-md-offset-3">
+        <ul className="nav nav-pills">
+          <li role="presentation">
             <Link to="/">Movies</Link>
           </li>
           <li>
@@ -30,7 +32,7 @@ class App extends Component {
         <hr />
         <Switch>
           <Route exact path="/">
-            <Movies />
+            <Movies/>
           </Route>
           <Route path="/form">
             <MoviesForm />

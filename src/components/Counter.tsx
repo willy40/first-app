@@ -1,5 +1,6 @@
-import React, {Component} from 'react'
+import {Component} from 'react'
 import { connect } from 'react-redux'
+import React from 'react';
 
 interface ICounterProps{
     count: number

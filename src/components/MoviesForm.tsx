@@ -1,11 +1,18 @@
-import React, {Component} from 'react'
+import {Component} from 'react'
 import { connect } from 'react-redux'
-import moviesActions from '../stores/actions/movieActions'
+import {resetMovies, resetErrorState} from '../stores/actions/movieActions'
 import { IMovie } from '../stores/reducers/types'
+import { Dispatch, bindActionCreators } from 'redux'
+import React from 'react';
+import { addMovieApi } from 'src/apis/movieApi'
+import { Spinner } from './Spiner'
 
 interface IMoviesFormProps { 
     add: (movie: IMovie) => {},
-    reset: () => {}
+    reset: () => {},
+    resetErrorState: () => {}
+    error: boolean,
+    pending: boolean
 }
 
 interface IMoviesFormState {
@@ -19,6 +26,10 @@ class MoviesForm extends Component<IMoviesFormProps, IMoviesFormState>{
         this.state = {
             value: ''
         }
+    }
+
+    componentDidMount(){
+        this.props.resetErrorState();
     }
 
     changeValue = (e: any) => {
@@ -42,36 +53,67 @@ class MoviesForm extends Component<IMoviesFormProps, IMoviesFormState>{
 
     handleEnter = (e: any) => {
         if(e.key === 'Enter'){
-            this.handleAdd(e)
+            this.handleAdd(e);
         }
     }
 
     resetList = () =>{
-        this.props.reset()
+        this.props.reset();
     }
 
-    render(){
-        return (
-            <form onSubmit={this.handleAdd}>
-                Enter Movie name: <input type="Text" 
-                    value={this.state.value}
-                    onChange={this.changeValue}
-                    onKeyPress={this.handleEnter}/>
+    handleAgain = () => {
+        this.props.resetErrorState();
+    }
 
-                <button type='submit'>Add movie
+    Error = () =>{
+        return (<button 
+                    type='button'
+                    onClick={this.handleAgain}>
+                    Error while adding movie, try again
                 </button>
-
-                <button type='button'
-                    onClick={this.resetList}>Clear
-                </button>
-            </form>
         )
+    }
+    Form = () =>{
+        return (<form onSubmit={this.handleAdd}>
+            Enter Movie name: <input type="Text" 
+                value={this.state.value}
+                onChange={this.changeValue}
+                onKeyPress={this.handleEnter}/>
+            
+            <button type='submit'>Add movie
+            </button>
+        
+            <button type='button'
+                onClick={this.resetList}>Clear
+            </button>
+        </form>)
+    }
+
+    render() {
+        if(this.props.error) {
+            return this.Error();
+        }
+        else {
+            if(this.props.pending){
+                return Spinner();
+            }
+            else
+            {
+                return this.Form();
+            }
+        }
     }
 }
 
-const mapDispatchToProps = () =>({
-    add: (movie: IMovie) => moviesActions.add(movie),
-    reset: () => moviesActions.reset()
+const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
+        add: (item: IMovie) => addMovieApi(item),
+        reset: () => resetMovies(),
+        resetErrorState: () => resetErrorState()
+    }, dispatch)
+
+const mapStateToProps = (state: any) => ({
+    error: state.movies.error,
+    pending: state.movies.pending
 })
 
-export default connect(null, mapDispatchToProps)(MoviesForm)
+export default connect(mapStateToProps, mapDispatchToProps)(MoviesForm)

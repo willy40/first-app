@@ -1,7 +1,8 @@
-import movieActions from '../stores/actions/movieActions';
+import { fetchMoviesPending, fetchMoviesComplete, fetchMoviesError, addMovieError, addMoviePending} from '../stores/actions/movieActions';
 
-export function fetchMovies() {
-    movieActions.fetch();
+export function fetchMoviesApi() {
+    return dispatch => {
+    dispatch(fetchMoviesPending());
 
     fetch('http://localhost:51328/movies')
     .then(res => res.json())
@@ -10,25 +11,37 @@ export function fetchMovies() {
             throw(res.error);
         }
 
-        movieActions.fetchComplete(res);
+        dispatch(fetchMoviesComplete(res));
         return res.products;
     })
     .catch(error => {
-        movieActions.fetchError();
+        dispatch(fetchMoviesError());
     })
+  }
 }
 
-export function addMovie(name){
-  var data = {
-    Name: name
-  }
+export function addMovieApi(name){
+  return dispatch => {
+    dispatch(addMoviePending());
+    var data = {
+      Name: name
+    }
 
-fetch('http://localhost:51328/movies', {
-  method: 'POST',
-  mode: 'cors',
-  body: JSON.stringify(data),
-  headers: {
-    'Content-Type': 'application/json'
-  }  
-});
+    fetch('http://localhost:51328/movies', {
+      method: 'POST',
+      mode: 'cors',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }  
+    })
+    .then(response => {
+      if(!response.ok){
+        throw new Error();
+      }
+    })
+    .catch(error => {
+      dispatch(addMovieError());
+    });
+  }
 }
