@@ -1,11 +1,10 @@
 import {Component} from 'react'
 import { connect } from 'react-redux'
 import {resetMovies, resetErrorState} from '../stores/actions/movieActions'
-import { IMovie } from '../stores/reducers/types'
+import { IMovie, IMovieStore } from '../stores/reducers/types'
 import { Dispatch, bindActionCreators } from 'redux'
 import React from 'react';
 import { addMovieApi } from 'src/apis/movieApi'
-import { Spinner } from './Spiner'
 
 interface IMoviesFormProps { 
     add: (movie: IMovie) => {},
@@ -42,11 +41,12 @@ class MoviesForm extends Component<IMoviesFormProps, IMoviesFormState>{
             return;
         }
 
-        this.props.add(
-            {
-                id: 100,
-                name: this.state.value
-            });
+        // this.props.add(
+        //     {
+        //         adult: false,
+        //         id: 100,
+        //         original_title: this.state.value
+        //     });
 
         this.setState({value:''})
     }
@@ -95,7 +95,7 @@ class MoviesForm extends Component<IMoviesFormProps, IMoviesFormState>{
         }
         else {
             if(this.props.pending){
-                return Spinner();
+                return <span>Wait</span>;
             }
             else
             {
@@ -111,9 +111,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
         resetErrorState: () => resetErrorState()
     }, dispatch)
 
-const mapStateToProps = (state: any) => ({
-    error: state.movies.error,
-    pending: state.movies.pending
+const mapStateToProps = (state: IMovieStore) => ({
+    error: state.error,
+    pending: state.pending
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(MoviesForm)

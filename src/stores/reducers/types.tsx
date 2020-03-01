@@ -1,20 +1,42 @@
 export interface IAction {
     type: string,
     item: any,
-    payload: Array<IMovie>
+    payload: IMovies
 }
 
 export interface IActors {
     list: Array<string>
   }
 
-  export interface IMovies {
-    list: Array<IMovie>
-    pending: boolean
-    error: boolean
-  }
+export interface IMovie {
+    popularity: number;
+    vote_count: number;
+    video: boolean;
+    poster_path: string;
+    id: number;
+    adult: boolean;
+    backdrop_path: string;
+    original_language: string;
+    original_title: string;
+    genre_ids: number[];
+    title: string;
+    vote_average: number;
+    overview: string;
+    release_date: string;
+}
 
-  export interface IMovie {
-    id: number,
-    name: string
-  }
+export interface IMovies {
+    page: number;
+    total_results: number;
+    total_pages: number;
+    results: IMovie[];
+}
+
+export interface IMovieStore {
+  Movies: IMovie[],
+  page: number;
+  total_results: number;
+  total_pages: number;
+  pending: boolean;
+  error: boolean;
+}
